@@ -1,0 +1,79 @@
+my way to create table best_join:
+1) create table best_join (id integer, name varchar(255), title varchar(255), genre varchar(255));
+2) insert into best_join (id, name, title, genre) SELECT author_id, name, title, genre FROM authors_books LEFT JOIN authors ON (authors.id = authors_books.author_id) LEFT JOIN books ON (books.id = authors_books.book_id) LEFT JOIN genres ON (books.genre_id = genres.genre_id);
+ id |       name       |        title        | genre
+----+------------------+---------------------+-------
+  1 | Френк Герберт    | Дюна                | SF
+  2 | Михайло Булгаков | Майстер ? Маргарита | novel
+  3 | Джек Лондон      | Б?лий клик          | story
+  4 | Йоган ?ете       | Фауст               |
+(4 rows)
+
+there some joins:
+SELECT author_id, name, title, genre FROM authors_books LEFT JOIN authors ON (authors.id = authors_books.author_id) LEFT JOIN books ON (books.id = authors_books.book_id) LEFT JOIN genres ON (books.genre_id = genres.genre_id);
+ author_id |       name       |        title        | genre
+-----------+------------------+---------------------+-------
+         1 | Френк Герберт    | Дюна                | SF
+         2 | Михайло Булгаков | Майстер ? Маргарита | novel
+         3 | Джек Лондон      | Б?лий клик          | story
+         4 | Йоган ?ете       | Фауст               |
+(4 rows)
+
+SELECT author_id, name, title, genre FROM authors_books LEFT JOIN authors ON (authors.id = authors_books.author_id) LEFT JOIN books ON (books.id = authors_books.book_id) FULL JOIN genres ON (books.genre_id = genres.genre_id);
+ author_id |       name       |        title        | genre
+-----------+------------------+---------------------+--------
+         1 | Френк Герберт    | Дюна                | SF
+         2 | Михайло Булгаков | Майстер ? Маргарита | novel
+         3 | Джек Лондон      | Б?лий клик          | story
+         4 | Йоган ?ете       | Фауст               |
+           |                  |                     | horror
+(5 rows)
+
+SELECT author_id, name, title, genre FROM authors_books FULL JOIN authors ON (authors.id = authors_books.author_id) FULL JOIN books ON (books.id = authors_books.book_id) FULL JOIN genres ON (books.genre_id = genres.genre_id);
+ author_id |       name       |        title        | genre
+-----------+------------------+---------------------+--------
+         1 | Френк Герберт    | Дюна                | SF
+         2 | Михайло Булгаков | Майстер ? Маргарита | novel
+         3 | Джек Лондон      | Б?лий клик          | story
+         4 | Йоган ?ете       | Фауст               |
+           | Роберт Хайнлайн  |                     |
+           |                  | В?йна ? мир         | novel
+           |                  |                     | horror
+(7 rows)
+
+SELECT author_id, name, title, genre FROM authors_books INNER JOIN authors ON (authors.id = authors_books.author_id) INNER JOIN books ON (books.id = authors_books.book_id) INNER JOIN genres ON (books.genre_id = genres.genre_id);
+ author_id |       name       |        title        | genre
+-----------+------------------+---------------------+-------
+         1 | Френк Герберт    | Дюна                | SF
+         2 | Михайло Булгаков | Майстер ? Маргарита | novel
+         3 | Джек Лондон      | Б?лий клик          | story
+(3 rows)
+
+select name, title, genre from authors inner join books on (books.id = authors.id) inner join genres on (books.genre_id = genres.genre_id);
+      name       |        title        | genre
+-----------------+---------------------+-------
+ Френк Герберт   | Майстер ? Маргарита | novel
+ Джек Лондон     | Б?лий клик          | story
+ Йоган ?ете      | Дюна                | SF
+ Роберт Хайнлайн | В?йна ? мир         | novel
+(4 rows)
+
+select name, title, genre from authors right join books on (books.id = authors.id) right join genres on (books.genre_id = genres.genre_id);
+      name       |        title        | genre
+-----------------+---------------------+--------
+ Френк Герберт   | Майстер ? Маргарита | novel
+ Джек Лондон     | Б?лий клик          | story
+ Йоган ?ете      | Дюна                | SF
+ Роберт Хайнлайн | В?йна ? мир         | novel
+                 |                     | horror
+(5 rows)
+
+select name, title, genre from authors right join books on (books.id = authors.id) left join genres on (books.genre_id = genres.genre_id);
+       name       |        title        | genre
+------------------+---------------------+-------
+ Френк Герберт    | Майстер ? Маргарита | novel
+ Михайло Булгаков | Фауст               |
+ Джек Лондон      | Б?лий клик          | story
+ Йоган ?ете       | Дюна                | SF
+ Роберт Хайнлайн  | В?йна ? мир         | novel
+(5 rows)

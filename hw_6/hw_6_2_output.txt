@@ -1,0 +1,3 @@
+Students studying in two or more groups: Emma Baker, Daniel Kim, Grace Lee, Alex Park, Ethan Kim, Claire Lee, Andrew Han, Jennifer Kim, Matthew Lee, Rachel Kim, Samuel Lee, Victoria Cho, Ryan Kim, Sarah Park, Olivia Kim, Justin Lee.
+Students who are not studying on the frontend: Emma Baker, Daniel Kim, Grace Lee, Michael Choi, Elizabeth Oh, Chloe Lee, Ethan Kim, Claire Lee, Andrew Han, Jennifer Kim, Matthew Lee, Rachel Kim, Samuel Lee, Victoria Cho, William Kim, Olivia Kim, Justin Lee.
+Students learning Python or Java: Daniel Kim, Ethan Kim, Claire Lee, Andrew Han, Jennifer Kim, Matthew Lee, Samuel Lee, Victoria Cho, Ryan Kim, Olivia Kim, Justin Lee

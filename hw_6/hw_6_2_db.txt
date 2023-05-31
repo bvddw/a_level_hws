@@ -1,0 +1,20 @@
+Emma Baker: Java, FullStack
+Daniel Kim: FrontEnd, Python, Java
+Grace Lee: Python, FullStack
+Michael Choi: FullStack
+Elizabeth Oh: Java
+Alex Park: Python, FrontEnd
+Chloe Lee: FullStack
+Ethan Kim: Python, Java
+Claire Lee: FrontEnd, Java
+Andrew Han: FrontEnd, Python, Java
+Jennifer Kim: Python, FullStack, Java
+Matthew Lee: FrontEnd, Java
+Rachel Kim: Python, FullStack
+Samuel Lee: FullStack, Java
+Victoria Cho: FrontEnd, FullStack, Java
+Ryan Kim: Python, FrontEnd, FullStack, Java
+Sarah Park: Python, FrontEnd
+William Kim: Java
+Olivia Kim: Python, FullStack, Java
+Justin Lee: FrontEnd, Java
