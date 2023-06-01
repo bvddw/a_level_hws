@@ -25,16 +25,23 @@ def amount_of_calls(list_of_phones: list) -> int:  # get total number of calls (
 
 # creating list of phones
 def creating_list_of_phones() -> list:
-    # creating phones
-    number_of_phones: int = int(
-        input('How many numbers you want to add to your phone contacts? (enter the number, please) '))
-    list_of_phones: list = []
-    for p in range(1, number_of_phones + 1):
-        phone: Phone = Phone()  # creating phone
-        phone_number = input(f'Enter phone number for {p} phone (for example "+380123456789"): ')  # get phone number
-        phone.number = phone_number  # set phone number
-        list_of_phones.append(phone)  # adding phone to list of phones
-    return list_of_phones
+    repeat: bool = True
+    while repeat:
+        # creating phones
+        try:
+            number_of_phones: int = int(input('How many numbers you want to add to your phone contacts? (enter the number, please) '))
+            list_of_phones: list = []
+            for p in range(1, number_of_phones + 1):
+                # creating phone
+                phone: Phone = Phone()
+                # get phone number
+                phone_number: str = input(f'Enter phone number for {p} phone (for example "+380123456789"): ')
+                phone.number = phone_number  # set phone number
+                list_of_phones.append(phone)  # adding phone to list of phones
+            return list_of_phones
+            repeat = False
+        except ValueError:
+            print('Enter the integer number, please.')
 
 
 # creating list of phones
@@ -62,7 +69,7 @@ while loop:
         print('You need to enter the number.')
 
 # output phone contacts
-print('\n Your contacts:')
+print('\nYour contacts:')
 for i, n in enumerate(phones):
     print(f'Phone number {i + 1}: {phones[i].get_phone_number()}')
 
