@@ -1,0 +1,12 @@
+People 1:   Contact name: Arsenii
+   Phone number: +380977547509
+   Number of calls: 3
+
+People 2:   Contact name: Sergii
+   Phone number: +380973182345
+   Number of calls: 1
+
+People 3:   Contact name: Alisa
+   Phone number: +380982353388
+   Number of calls: 2
+
