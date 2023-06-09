@@ -72,7 +72,7 @@ if len(developers) + len(recruiters) > 1:
                     print('\nList of developers:')
                     for i, human in enumerate(developers):
                         print(f'ID: {i + 1}, {human}')
-                    print(compare())
+                    print(compare(names_recruiters, names_developers, recruiters, developers))
                 case 2:
                     break
                 case _:
@@ -87,7 +87,7 @@ if len(developers) > 1:
             choice = int(input('Do you want union two Developers?\n1. YES\n2. NO\n'))
             match choice:
                 case 1:
-                    print(union_dev())
+                    print(union_dev(names_developers, developers))
                 case 2:
                     cont = False
                 case _:

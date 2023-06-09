@@ -1,9 +1,8 @@
 from Recruiter import Recruiter
 from Developer import Developer
-from main_employee import names_recruiters, names_developers, developers, recruiters
 
 
-def compare() -> str:
+def compare(names_recruiters, names_developers, recruiters, developers) -> str:
     count_dev = 0
     is_first_dev: bool = False
     while True:
@@ -88,7 +87,7 @@ def compare() -> str:
         return f'{worker_1.name} has the same salary with {worker_2.name}'
 
 
-def union_dev() -> Developer:
+def union_dev(names_developers, developers) -> Developer:
     print('\nList of developers:')
     for i, human in enumerate(developers):
         print(f'ID: {i + 1}, {human}')
