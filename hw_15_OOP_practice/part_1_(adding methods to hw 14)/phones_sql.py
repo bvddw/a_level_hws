@@ -1,10 +1,6 @@
 import psycopg2
 from settings import host, user, password, db, port
 
-new_database = 'phone_numbers'
-new_table = 'phones'
-new_columns = False
-
 
 class Phone:  # class phone with fields number and count, where number - phone number, count - number of calls
     # initialization class (Phone) representative
@@ -25,6 +21,84 @@ class Phone:  # class phone with fields number and count, where number - phone n
 
     def call(self):  # increase the number of calls
         self.__count += 1
+
+
+class PsqlPhoneManager:
+    def __init__(self, new_database='phone_numbers', new_table='phones'):
+        self.new_database = new_database
+        self.new_table = new_table
+        self.connect = None
+
+    def create_database(self):
+        try:
+            self.connect = psycopg2.connect(
+                host=host,
+                port=port,
+                user=user,
+                password=password,
+                database=db
+            )
+
+            self.connect.set_session(autocommit=True)
+
+            with self.connect.cursor() as cursor:
+                cursor.execute(f"SELECT 1 FROM pg_catalog.pg_database WHERE datname = '{self.new_database}'")
+                db_exists = cursor.fetchone()[0]
+
+                if not db_exists:
+                    cursor.execute(f'CREATE DATABASE {self.new_database};')
+                    print(f'Create Database!')
+        except Exception as e:
+            print('Error:', e)
+
+    def create_table(self):
+        try:
+            self.connect = psycopg2.connect(
+                host=host,
+                port=port,
+                user=user,
+                password=password,
+                database=self.new_database
+            )
+
+            self.connect.set_session(autocommit=True)
+
+            with self.connect.cursor() as cursor:
+                cursor.execute(f"SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = '{self.new_table}')")
+                table_exists = cursor.fetchone()[0]
+
+                if not table_exists:
+                    cursor.execute(f'''CREATE TABLE {self.new_table} (
+                                id SERIAL PRIMARY KEY,
+                                name VARCHAR(20) NOT NULL,
+                                phone VARCHAR(20) NOT NULL,
+                                calls INTEGER NOT NULL);''')
+
+        except Exception as e:
+            print('Error:', e)
+
+    def insert_phones(self, phones):
+        try:
+            self.connect = psycopg2.connect(
+                host=host,
+                port=port,
+                user=user,
+                password=password,
+                database=self.new_database
+            )
+
+            self.connect.set_session(autocommit=True)
+
+            with self.connect.cursor() as cursor:
+                for phone in phones:
+                    cursor.execute(f"INSERT INTO {self.new_table} (name, phone, calls) VALUES (%s, %s, %s);",
+                                   (phone.name, phone.number, phone.get_number_of_call()))
+
+            print("Data is updated!")
+
+        except Exception as e:
+            print('Error:', e)
+
 
 
 # count total number of calls
@@ -57,86 +131,39 @@ def creating_list_of_phones() -> list:
 
 
 
-try:
-    connect = psycopg2.connect(
-        host=host,
-        port=port,
-        user=user,
-        password=password,
-        database=db
-    )
+phone_manager = PsqlPhoneManager()
+phone_manager.create_database()
+phone_manager.create_table()
 
-    connect.set_session(autocommit=True)
+phones = creating_list_of_phones()
 
-    with connect.cursor() as cursor:
-        cursor.execute(f"SELECT 1 FROM pg_catalog.pg_database WHERE datname = '{new_database}'")
-        db_exists = cursor.fetchone()[0]
-
-        if not db_exists:
-            cursor.execute(f'CREATE DATABASE {new_database};')
-            print(f'Create Database!')
-
-    connect = psycopg2.connect(
-        host=host,
-        port=port,
-        user=user,
-        password=password,
-        database=new_database
-    )
-
-    connect.set_session(autocommit=True)
-
-    with connect.cursor() as cursor:
-        cursor.execute(f"SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = '{new_table}')")
-        table_exists = cursor.fetchone()[0]
-
-        if not table_exists:
-            cursor.execute(f'''CREATE TABLE {new_table} (
-                        id SERIAL PRIMARY KEY,
-                        name VARCHAR(20) NOT NULL,
-                        phone VARCHAR(20) NOT NULL,
-                        calls INTEGER NOT NULL);''')
-
-        # creating list of phones
-        phones: list = creating_list_of_phones()
-
-        # calls for all phones
-        while True:
-            try:
-                choice: int = int(input('You want to call someone? (1 - yes, any other number - no) '))
-                if choice == 1:
+while True:
+    try:
+        choice = int(input('You want to call someone?\n1. YES\n2. NO\n'))
+        match choice:
+            case 1:
+                try:
+                    number_phone = int(input('What phone do you want to call? (1 - first, 2 - second, ...) '))
+                    if number_phone <= 0:
+                        print('You must enter numbers greater than 0.')
                     try:
-                        number_phone: int = int(input('What phone do you want to call? (1 - first,  2 - second, ...) '))
-                        if number_phone <= 0:
-                            print('You must enter numbers greater than 0.')
-                        try:
-                            phones[number_phone - 1].call()
-                        except IndexError:
-                            print('We do not have that many phones.')
-                    except ValueError:
-                        print('You need to enter the number.')
-                else:
-                    break
-            except ValueError:
-                print('You need to enter the number.')
+                        phones[number_phone - 1].call()
+                    except IndexError:
+                        print('We do not have that many phones.')
+                except ValueError:
+                    print('You need to enter a number.')
+            case 2:
+                break
+            case _:
+                print('You need to enter 1 or 2.')
+    except ValueError:
+        print('You need to enter the integer number.')
 
-        t_count: int = amount_of_calls(phones)  # total number of calls for all phones
-        print("\nAmount of calls:", t_count)  # printing total number of calls for all phones
+t_count = amount_of_calls(phones)
+print("\nAmount of calls:", t_count)
 
-        for i in phones:
-            cursor.execute(f"INSERT INTO {new_table} (name, phone, calls) VALUES (%s, %s, %s);", (i.name, i.number, i.get_number_of_call()))
+phone_manager.insert_phones(phones)
 
-        print("Data is updated!")
-
-        # output phone contacts
-        print('\nYour contacts:')
-        for i, n in enumerate(phones):
-            print(f'Phone number {i + 1}: {n}')
-
-except Exception as e:
-    print('Error:', e)
-
-finally:
-    if connect:
-        connect.close()
-        print('Connection end!')
+print('\nContacts:')
+for i, n in enumerate(phones):
+    print(f'People {i + 1}: \n    {n}')
