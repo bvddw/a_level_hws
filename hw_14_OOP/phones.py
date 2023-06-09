@@ -164,6 +164,6 @@ print("\nAmount of calls:", t_count)
 
 phone_manager.insert_phones(phones)
 
-print('\nYour contacts:')
+print('\nContacts:')
 for i, n in enumerate(phones):
     print(f'People {i + 1}: \n    {n}')

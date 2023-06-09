@@ -1,5 +1,6 @@
 new_file = 'phone_data.txt'  # file for output data
 
+
 class Phone:  # class phone with fields number and count, where number - phone number, count - number of calls
     number: str = ''  # let the default number be just an empty string
     __count: int = 0  # default number of calls - zero
@@ -22,6 +23,7 @@ class Phone:  # class phone with fields number and count, where number - phone n
 
     def call(self):  # increase the number of calls
         self.__count += 1
+
 
 # count total number of calls
 def amount_of_calls(list_of_phones: list) -> int:  # get total number of calls (for all phones)
@@ -95,4 +97,5 @@ print("Data is written to the file:", new_file)
 
 print('\nYour contacts:')
 for i, n in enumerate(phones):
-    print(f'People {i + 1}: \n    name: {n.get_contact_name()}\n    number: {n.get_phone_number()},\n    calls: {n.get_number_of_call()}')
+    print(
+        f'People {i + 1}: \n    name: {n.get_contact_name()}\n    number: {n.get_phone_number()},\n    calls: {n.get_number_of_call()}')
