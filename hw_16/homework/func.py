@@ -1,6 +1,6 @@
 from Recruiter import Recruiter
 from Developer import Developer
-from upd_employee import names_recruiters, names_developers, developers, recruiters
+from main_employee import names_recruiters, names_developers, developers, recruiters
 
 
 def compare() -> str:
