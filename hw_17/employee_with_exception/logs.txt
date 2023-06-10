@@ -1,0 +1,8 @@
+
+2023-06-10 20:20:42 | Traceback (most recent call last):
+  File "D:\a_level_hms\hw_17\employee_with_exception\main_employee.py", line 58, in <module>
+    new_employee: Recruiter = Recruiter(name, salary, email)
+  File "D:\a_level_hms\hw_17\employee_with_exception\Employee.py", line 32, in __init__
+    raise EmailAlreadyExistsException('Email already exist.')
+exceptions.EmailAlreadyExistsException: Email already exist.
+
