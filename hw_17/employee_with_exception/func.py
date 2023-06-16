@@ -1,5 +1,5 @@
-from Recruiter import Recruiter
-from Developer import Developer
+from recruiter import Recruiter
+from developer import Developer
 
 
 # function for compare two employees (if two devs - compare amount of knowledge, else - salary)
