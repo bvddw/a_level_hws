@@ -40,7 +40,7 @@ class Candidate:
             if row == '':
                 continue
             info = row.split(',')
-            if info[0] == 'Full Name':
+            if info[cls.FULL_NAME] == 'Full Name':
                 continue
             """
             info[cls.FULL_NAME].split()[cls.FIRST_NAME] - (string) - first name
