@@ -4,7 +4,7 @@ from exceptions import EmailAlreadyExistsException
 
 
 # check if .csv already has some info
-def clean():
+def is_empty():
     with open('info.csv', 'r') as file:
         rows = csv.reader(file)
         for row in rows:
@@ -13,9 +13,9 @@ def clean():
     return True
 
 
-# if .csv file clean - print there 'Name' and 'Info' - two columns
+# if .csv file is empty - print there 'Name' and 'Info' - two columns
 with open('info.csv', 'a', newline='') as file:
-    if clean():
+    if is_empty():
         csv.writer(file).writerow(['Name', 'Email'])
 
 

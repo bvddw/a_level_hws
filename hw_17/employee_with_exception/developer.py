@@ -1,4 +1,4 @@
-from Employee import Employee
+from employee import Employee
 
 
 # class Developer, have all attributes from Employee, and self.tech_stack (amount of knowledge)

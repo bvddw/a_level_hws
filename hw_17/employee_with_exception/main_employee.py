@@ -1,6 +1,6 @@
 # imports
-from Recruiter import Recruiter
-from Developer import Developer
+from recruiter import Recruiter
+from developer import Developer
 from func import compare, union_dev
 from exceptions import EmailAlreadyExistsException
 import csv
