@@ -23,4 +23,8 @@ candidates = Candidate.generate_candidates(
     "https://bitbucket.org/ivnukov/lesson2/raw/4f59074e6fbb552398f87636b5bf089a1618da0a/candidates.csv")
 # save into data.csv file
 for candidate in candidates:
+<<<<<<< HEAD
     save_data.save_data(candidate.full_name, candidate.email, candidate.tech_stack, candidate.main_skill, candidate.main_skill_grade)
+=======
+    save_data.save_data(candidate.full_name, candidate.email, candidate.tech_stack, candidate.main_skill, candidate.main_skill_grade)
+>>>>>>> 6cb8e1a60f5e8f9ae5c40dd694fef23156820388
