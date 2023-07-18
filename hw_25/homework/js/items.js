@@ -1273,76 +1273,93 @@ const items = [
 ];
 
 
-let header = document.createElement('div')
-header.className = 'header'
-let homeLink = document.createElement('a')
-homeLink.className = 'home'
-homeLink.innerText = 'HOME'
-homeLink.href = ''
-let inputElement = document.createElement('input')
-inputElement.className = 'input'
-inputElement.placeholder = 'Enter device name'
-let cartBtn = document.createElement('button')
-cartBtn.className = 'cart'
-cartBtn.innerText = 'Cart'
-header.appendChild(homeLink)
-header.appendChild(inputElement)
-header.appendChild(cartBtn)
-document.body.appendChild(header)
-
-
-let devicesGrid = document.createElement('div')
-devicesGrid.className = 'grid'
-for (let item of items) {
-  let deviceDiv = document.createElement('div')
-  deviceDiv.className = 'container'
-
-  let imgDiv = document.createElement('div')
-  imgDiv.className = 'div-device-image'
-  let deviceImg = document.createElement('img')
-  deviceImg.className = 'device-image'
-  deviceImg.src = item.imgUrl
-  imgDiv.appendChild(deviceImg)
-
-  let divDeviceName = document.createElement('div')
-  divDeviceName.className = 'div-device-name'
-  let deviceName = document.createElement('a')
-  deviceName.className = 'device-name'
-  deviceName.innerText = item.name
-  deviceName.href = ''
-  divDeviceName.appendChild(deviceName)
-
-  let additionInfoDiv = document.createElement('div')
-  additionInfoDiv.className = 'addition-info'
-  let inStockInfoDiv = document.createElement('div')
-  inStockInfoDiv.className = 'in-stock-info'
-  let inStockProperty = document.createElement('a')
-  inStockProperty.className = 'in-stock'
-  let stockImg = document.createElement('img')
-  if (item.orderInfo.inStock !== 0) {
-    stockImg.className = 'in-stock-image'
-    stockImg.src = 'img/icons/check.svg'
-    inStockProperty.innerText = `In stock: ${item.orderInfo.inStock}`
-    inStockProperty.className = 'in-stock'
-  } else {
-    stockImg.className = 'out-of-stock-image'
-    stockImg.src = 'img/icons/close.svg'
-    inStockProperty.innerText = `In stock: ${item.orderInfo.inStock}`
-    inStockProperty.className = 'out-of-stock'
+class webSite {
+  constructor() {
+    this.createHeaderHTML()
+    this.devicesGrid = document.createElement('div')
+    this.devicesGrid.className = 'grid'
+    items.forEach(item => this.displayDevice(item))
+    document.body.appendChild(this.devicesGrid)
   }
-  inStockInfoDiv.appendChild(stockImg)
-  inStockInfoDiv.appendChild(inStockProperty)
 
-  let priceProperty = document.createElement('p')
-  priceProperty.className = 'device-price'
-  priceProperty.innerText = `$${item.price}`
-  additionInfoDiv.appendChild(inStockInfoDiv)
-  additionInfoDiv.appendChild(priceProperty)
+  createHeaderHTML() {
+    let header = document.createElement('div')
+    header.className = 'header'
 
-  deviceDiv.appendChild(imgDiv)
-  deviceDiv.appendChild(divDeviceName)
-  deviceDiv.appendChild(additionInfoDiv)
-  devicesGrid.appendChild(deviceDiv)
+    let homeLink = document.createElement('a')
+    homeLink.className = 'home'
+    homeLink.innerText = 'HOME'
+    homeLink.href = ''
+
+    let inputElement = document.createElement('input')
+    inputElement.className = 'input'
+    inputElement.placeholder = 'Enter device name'
+
+    let cartBtn = document.createElement('button')
+    cartBtn.className = 'cart'
+    cartBtn.innerText = 'Cart'
+
+    header.appendChild(homeLink)
+    header.appendChild(inputElement)
+    header.appendChild(cartBtn)
+    document.body.appendChild(header)
+  }
+
+  displayDevice(item) {
+    // WHOLE DEVICE
+    let deviceDiv = document.createElement('div')
+    deviceDiv.className = 'container'
+
+    // IMAGE DIV
+    let imgDiv = document.createElement('div')
+    imgDiv.className = 'div-device-image'
+    let deviceImg = document.createElement('img')
+    deviceImg.className = 'device-image'
+    deviceImg.src = item.imgUrl
+    imgDiv.appendChild(deviceImg)
+
+    // DEVICE NAME DIV
+    let divDeviceName = document.createElement('div')
+    divDeviceName.className = 'div-device-name'
+    let deviceName = document.createElement('a')
+    deviceName.className = 'device-name'
+    deviceName.innerText = item.name
+    deviceName.href = ''
+    divDeviceName.appendChild(deviceName)
+
+    // ADDITION INFO DIV
+    let additionInfoDiv = document.createElement('div')
+    additionInfoDiv.className = 'addition-info'
+    let inStockInfoDiv = document.createElement('div')
+    inStockInfoDiv.className = 'in-stock-info'
+    let inStockProperty = document.createElement('a')
+    inStockProperty.className = 'in-stock'
+    let stockImg = document.createElement('img')
+    if (item.orderInfo.inStock !== 0) {
+      stockImg.className = 'in-stock-image'
+      stockImg.src = 'img/icons/check.svg'
+      inStockProperty.innerText = `In stock: ${item.orderInfo.inStock}`
+      inStockProperty.className = 'in-stock'
+    } else {
+      stockImg.className = 'out-of-stock-image'
+      stockImg.src = 'img/icons/close.svg'
+      inStockProperty.innerText = `In stock: ${item.orderInfo.inStock}`
+      inStockProperty.className = 'out-of-stock'
+    }
+    inStockInfoDiv.appendChild(stockImg)
+    inStockInfoDiv.appendChild(inStockProperty)
+
+    let priceProperty = document.createElement('p')
+    priceProperty.className = 'device-price'
+    priceProperty.innerText = `$${item.price}`
+    additionInfoDiv.appendChild(inStockInfoDiv)
+    additionInfoDiv.appendChild(priceProperty)
+
+    deviceDiv.appendChild(imgDiv)
+    deviceDiv.appendChild(divDeviceName)
+    deviceDiv.appendChild(additionInfoDiv)
+    this.devicesGrid.appendChild(deviceDiv)
+  }
 }
 
-document.body.appendChild(devicesGrid)
+let website = new webSite()
