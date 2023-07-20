@@ -184,8 +184,7 @@ class Post {
       saveBtn.addEventListener('click', () => {
         data[2] = inputTitle.value
         data[3] = inputBody.value
-        console.log({title: data[2], body: data[3]})
-        fetch('https://jsonplaceholder.typicode.com/posts', {
+        fetch(`https://jsonplaceholder.typicode.com/posts/${this.id}`, {
           method: 'PATCH',
           body: JSON.stringify({title: data[2], body: data[3]}),
           headers: {
@@ -194,8 +193,10 @@ class Post {
         })
           .then(response => response.json())
           .then(newData => {
-            title.innerText = newData.title || data[2]
-            body.innerText = newData.body || data[3]
+            title.innerText = newData.title
+            body.innerText = newData.body
+            this.title = newData.title
+            this.body = newData.body
 
             activeDiv.innerText = ''
             activeDiv.appendChild(changeBtn)
@@ -209,12 +210,8 @@ class Post {
     })
 
     deleteBtn.addEventListener('click', () => {
-      fetch('https://jsonplaceholder.typicode.com/posts', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({userId: data[0], id: data[1], title: data[2], body: data[3]})
+      fetch(`https://jsonplaceholder.typicode.com/posts/${this.id}`, {
+        method: 'DELETE'
       })
         .then(() => div.innerText = '')
     })
