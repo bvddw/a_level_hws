@@ -200,16 +200,21 @@ class Post {
             activeDiv.innerText = ''
             activeDiv.appendChild(changeBtn)
             activeDiv.appendChild(deleteBtn)
+            data[2] = title.textContent
+            data[3] = body.textContent
+            this.title = body.textContent
+            this.body = body.textContent
           })
-        .catch(err => {
-          console.log("there is an error")
-        });
       })
     })
 
     deleteBtn.addEventListener('click', () => {
       fetch('https://jsonplaceholder.typicode.com/posts', {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({userId: data[0], id: data[1], title: data[2], body: data[3]})
       })
         .then(() => div.innerText = '')
     })
