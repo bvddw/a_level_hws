@@ -1275,16 +1275,20 @@ const items = [
 
 class webSite {
   constructor() {
-    this.createHeaderHTML()
-    this.createSidebarHTML()
     this.devicesGrid = document.createElement('div')
     this.devicesGrid.className = 'grid'
     this.devices = []
+    this.categories = []
     items.forEach(item => {
       let newDevice = new Device(item)
       this.devices.push(newDevice)
+      if (!this.categories.includes(newDevice.property.category)) {
+        this.categories.push(newDevice.property.category)
+      }
       this.devicesGrid.appendChild(newDevice.deviceDiv)
     })
+    this.createHeaderHTML()
+    this.createSidebarHTML()
     document.body.appendChild(this.devicesGrid)
   }
 
@@ -1339,12 +1343,12 @@ class webSite {
     paragraph.style.marginBottom = '6px'
     paragraph.style.marginTop = '24px'
     sortDiv.appendChild(paragraph)
+    sidebar.appendChild(sortDiv)
 
     let sortByPriceFromLow = document.createElement('button')
     sortByPriceFromLow.className = 'low-to-high-button'
     sortByPriceFromLow.innerText = 'Price: low to high'
     sortDiv.appendChild(sortByPriceFromLow)
-    sidebar.appendChild(sortDiv)
     sortByPriceFromLow.addEventListener('click', () => {
       this.devicesGrid.innerText = ''
       let settings = this.devices.sort((a, b) => a.property.price - b.property.price)
@@ -1357,7 +1361,6 @@ class webSite {
     sortByPriceFromHigh.className = 'high-to-low-button'
     sortByPriceFromHigh.innerText = 'Price: high to low'
     sortDiv.appendChild(sortByPriceFromHigh)
-    sidebar.appendChild(sortDiv)
     sortByPriceFromHigh.addEventListener('click', () => {
       this.devicesGrid.innerText = ''
       let settings = this.devices.sort((a, b) => - a.property.price + b.property.price)
@@ -1370,7 +1373,6 @@ class webSite {
     avgReviews.className = 'review-button'
     avgReviews.innerText = 'Avg. customers reviews'
     sortDiv.appendChild(avgReviews)
-    sidebar.appendChild(sortDiv)
     avgReviews.addEventListener('click', () => {
       this.devicesGrid.innerText = ''
       let settings = this.devices.sort((a, b) => - a.property.orderInfo.reviews + b.property.orderInfo.reviews)
@@ -1378,6 +1380,32 @@ class webSite {
         this.devicesGrid.appendChild(device.deviceDiv)
       })
     })
+
+    let displayTypeOnlyDiv = document.createElement('div')
+    displayTypeOnlyDiv.className = 'display-chosen-type-only'
+    let displayPar = document.createElement('h2')
+    displayPar.innerText = 'Choose category'
+    displayPar.style.marginBottom = '6px'
+    displayPar.style.marginTop = '24px'
+    displayTypeOnlyDiv.appendChild(displayPar)
+    this.categories.forEach(item => {
+      let correctDisplay = document.createElement('p')
+      correctDisplay.style.margin = '0px'
+      let displayBtn = document.createElement('button')
+      displayBtn.className = 'display-button'
+      displayBtn.innerText = item.toLowerCase()
+      correctDisplay.appendChild(displayBtn)
+      displayTypeOnlyDiv.appendChild(correctDisplay)
+      displayBtn.addEventListener('click', () => {
+        this.devicesGrid.innerText = ''
+        this.devices.forEach(device => {
+          if (device.property.category === item) {
+            this.devicesGrid.appendChild(device.deviceDiv)
+        }
+        })
+      })
+    })
+    sidebar.appendChild(displayTypeOnlyDiv)
   }
 }
 

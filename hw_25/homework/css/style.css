@@ -174,3 +174,19 @@
   background-color: rgba(0, 0, 0, 0.64);
   color: white;
 }
+.display-chosen-type-only {
+  justify-content: center;
+  display: grid;
+  text-align: center;
+}
+.display-button {
+  border-radius: 11px;
+  border-width: 1px;
+  height: 34px;
+  margin-left: 10px;
+  cursor: pointer;
+  margin-top: 6px;
+  background-color: rgba(0, 0, 0, 0.64);
+  color: white;
+  padding: 2px 16px 2px 16px;
+}
