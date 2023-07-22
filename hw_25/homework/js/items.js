@@ -490,7 +490,7 @@ const items = [
         InTheBox: ['Case', 'Solo Loop', '1m Magnetic Charging Cable'],
         orderInfo: {
         	inStock: 90, // кол-во едениц товара в наличии
-        	reviews: 458, // процент положительных отзывов
+        	reviews: 45, // процент положительных отзывов
         }
     },
     {
@@ -1276,9 +1276,15 @@ const items = [
 class webSite {
   constructor() {
     this.createHeaderHTML()
+    this.createSidebarHTML()
     this.devicesGrid = document.createElement('div')
     this.devicesGrid.className = 'grid'
-    items.forEach(item => this.displayDevice(item))
+    this.devices = []
+    items.forEach(item => {
+      let newDevice = new Device(item)
+      this.devices.push(newDevice)
+      this.devicesGrid.appendChild(newDevice.deviceDiv)
+    })
     document.body.appendChild(this.devicesGrid)
   }
 
@@ -1291,22 +1297,98 @@ class webSite {
     homeLink.innerText = 'HOME'
     homeLink.href = ''
 
+    let inputElementDiv = document.createElement('div')
     let inputElement = document.createElement('input')
     inputElement.className = 'input'
     inputElement.placeholder = 'Enter device name'
+    let searchButton = document.createElement('button')
+    searchButton.innerText = 'Search'
+    searchButton.className = 'search'
+    inputElementDiv.appendChild(inputElement)
+    inputElementDiv.appendChild(searchButton)
 
     let cartBtn = document.createElement('button')
     cartBtn.className = 'cart'
     cartBtn.innerText = 'Cart'
 
     header.appendChild(homeLink)
-    header.appendChild(inputElement)
+    header.appendChild(inputElementDiv)
     header.appendChild(cartBtn)
+
+    searchButton.addEventListener('click', () => {
+      let value = inputElement.value
+      inputElement.value = ''
+      this.devicesGrid.innerText = ''
+      this.devices.forEach(device => {
+        if (device.property.name.toLowerCase().includes(value.toLowerCase()))
+        this.devicesGrid.appendChild(device.deviceDiv)
+      })
+    })
+
     document.body.appendChild(header)
   }
 
-  displayDevice(item) {
-    // WHOLE DEVICE
+  createSidebarHTML() {
+    let sidebar = document.createElement('div')
+    sidebar.className = 'sidebar'
+    document.body.appendChild(sidebar)
+    let sortDiv = document.createElement('div')
+    sortDiv.className = 'sort-btns'
+    let paragraph = document.createElement('h2')
+    paragraph.innerText = 'Choose sort type'
+    paragraph.style.marginBottom = '6px'
+    paragraph.style.marginTop = '24px'
+    sortDiv.appendChild(paragraph)
+
+    let sortByPriceFromLow = document.createElement('button')
+    sortByPriceFromLow.className = 'low-to-high-button'
+    sortByPriceFromLow.innerText = 'Price: low to high'
+    sortDiv.appendChild(sortByPriceFromLow)
+    sidebar.appendChild(sortDiv)
+    sortByPriceFromLow.addEventListener('click', () => {
+      this.devicesGrid.innerText = ''
+      let settings = this.devices.sort((a, b) => a.property.price - b.property.price)
+      this.devices.forEach(device => {
+        this.devicesGrid.appendChild(device.deviceDiv)
+      })
+    })
+
+    let sortByPriceFromHigh = document.createElement('button')
+    sortByPriceFromHigh.className = 'high-to-low-button'
+    sortByPriceFromHigh.innerText = 'Price: high to low'
+    sortDiv.appendChild(sortByPriceFromHigh)
+    sidebar.appendChild(sortDiv)
+    sortByPriceFromHigh.addEventListener('click', () => {
+      this.devicesGrid.innerText = ''
+      let settings = this.devices.sort((a, b) => - a.property.price + b.property.price)
+      this.devices.forEach(device => {
+        this.devicesGrid.appendChild(device.deviceDiv)
+      })
+    })
+
+    let avgReviews = document.createElement('button')
+    avgReviews.className = 'review-button'
+    avgReviews.innerText = 'Avg. customers reviews'
+    sortDiv.appendChild(avgReviews)
+    sidebar.appendChild(sortDiv)
+    avgReviews.addEventListener('click', () => {
+      this.devicesGrid.innerText = ''
+      let settings = this.devices.sort((a, b) => - a.property.orderInfo.reviews + b.property.orderInfo.reviews)
+      this.devices.forEach(device => {
+        this.devicesGrid.appendChild(device.deviceDiv)
+      })
+    })
+  }
+}
+
+class Device {
+  constructor(property) {
+    this.property = property
+    this.deviceDiv = this.createHTML()
+  }
+
+  createHTML() {
+    let possibleSettings = ['display', 'ram', 'storage']
     let deviceDiv = document.createElement('div')
     deviceDiv.className = 'container'
 
@@ -1315,17 +1397,39 @@ class webSite {
     imgDiv.className = 'div-device-image'
     let deviceImg = document.createElement('img')
     deviceImg.className = 'device-image'
-    deviceImg.src = item.imgUrl
+    deviceImg.src = this.property.imgUrl
     imgDiv.appendChild(deviceImg)
 
     // DEVICE NAME DIV
     let divDeviceName = document.createElement('div')
     divDeviceName.className = 'div-device-name'
-    let deviceName = document.createElement('a')
+    let deviceName = document.createElement('p')
     deviceName.className = 'device-name'
-    deviceName.innerText = item.name
+    deviceName.innerText = this.property.name
     deviceName.href = ''
     divDeviceName.appendChild(deviceName)
+    let additionSettingsInfoDiv = document.createElement('div')
+    let deviceSettings = {}
+    possibleSettings.forEach(item => {
+      if (this.property[item]) {
+        if (item === 'storage' || item === 'ram') {
+          deviceSettings[item] = this.property[item]
+        }
+        deviceSettings[item] = this.property[item]
+      }
+    })
+    Object.entries(deviceSettings).forEach(entry => {
+      const [key, value] = entry
+      let settingPar = document.createElement('p')
+      settingPar.className = 'settings'
+      if (key === 'ram' || key === 'storage') {
+        settingPar.innerText = `${key}: ${value} gb`
+      } else if (key === 'display') {
+        settingPar.innerText = `${key}: ${value} inches`
+      }
+      additionSettingsInfoDiv.appendChild(settingPar)
+    })
+    divDeviceName.appendChild(additionSettingsInfoDiv)
 
     // ADDITION INFO DIV
     let additionInfoDiv = document.createElement('div')
@@ -1335,30 +1439,34 @@ class webSite {
     let inStockProperty = document.createElement('a')
     inStockProperty.className = 'in-stock'
     let stockImg = document.createElement('img')
-    if (item.orderInfo.inStock !== 0) {
+    if (this.property.orderInfo.inStock !== 0) {
       stockImg.className = 'in-stock-image'
       stockImg.src = 'img/icons/check.svg'
-      inStockProperty.innerText = `In stock: ${item.orderInfo.inStock}`
+      inStockProperty.innerText = `In stock: ${this.property.orderInfo.inStock}`
       inStockProperty.className = 'in-stock'
     } else {
       stockImg.className = 'out-of-stock-image'
       stockImg.src = 'img/icons/close.svg'
-      inStockProperty.innerText = `In stock: ${item.orderInfo.inStock}`
+      inStockProperty.innerText = `In stock: ${this.property.orderInfo.inStock}`
       inStockProperty.className = 'out-of-stock'
     }
     inStockInfoDiv.appendChild(stockImg)
     inStockInfoDiv.appendChild(inStockProperty)
 
+    let reviewsProperty = document.createElement('p')
+    reviewsProperty.className = 'reviews'
+    reviewsProperty.innerText = `positive reviews: ${this.property.orderInfo.reviews}%`
     let priceProperty = document.createElement('p')
     priceProperty.className = 'device-price'
-    priceProperty.innerText = `$${item.price}`
+    priceProperty.innerText = `$${this.property.price}`
     additionInfoDiv.appendChild(inStockInfoDiv)
+    additionInfoDiv.appendChild(reviewsProperty)
     additionInfoDiv.appendChild(priceProperty)
 
     deviceDiv.appendChild(imgDiv)
     deviceDiv.appendChild(divDeviceName)
     deviceDiv.appendChild(additionInfoDiv)
-    this.devicesGrid.appendChild(deviceDiv)
+    return deviceDiv
   }
 }
 
