@@ -1326,6 +1326,7 @@ class webSite {
     header.appendChild(this.cartBtn)
 
     searchButton.addEventListener('click', () => {
+      this.inCartDiv.innerText = ''
       let value = inputElement.value
       inputElement.value = ''
       this.devicesGrid.innerText = ''
