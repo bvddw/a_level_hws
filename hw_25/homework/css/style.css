@@ -10,6 +10,13 @@
   background-color: white;
   align-items: center;
 }
+.cart-div {
+  right: 0;
+  bottom: 0;
+  font-size: x-large;
+  margin-top: 120px;
+  text-align: center;
+}
 .sidebar {
   position: fixed;
   top: 64px;
@@ -50,15 +57,20 @@
   cursor: pointer;
   background-color: rgb(7, 49, 194);
   color: white;
+  transition: 0.2s;
+}
+.search:active {
+  color: rgb(7, 49, 194);
+  background-color: white;
+  border: none;
 }
 .cart {
   background-color: black;
   color: white;
   border: 0;
+  padding: 6px 20px 6px 20px;
   border-radius: 20px;
   cursor: pointer;
-  width: 50px;
-  height: 30px;
   box-shadow: 2px 6px 4px rgba(0, 0, 0, 0.81);
   transition: 100ms;
 }
@@ -189,4 +201,22 @@
   background-color: rgba(0, 0, 0, 0.64);
   color: white;
   padding: 2px 16px 2px 16px;
+}
+.add-to-cart-btn {
+  background-color: yellow;
+  color: rgba(0, 0, 0);
+  padding: 6px;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 6px;
+  bottom: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.add-to-cart-btn:hover {
+  background-color: rgba(255, 255, 0, 0.64);
+}
+.add-to-cart-btn:active {
+  background-color: black;
+  color: yellow;
 }

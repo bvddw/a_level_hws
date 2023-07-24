@@ -1277,10 +1277,19 @@ class webSite {
   constructor() {
     this.devicesGrid = document.createElement('div')
     this.devicesGrid.className = 'grid'
+    this.itemsInCart = 0
+    this.cartBtn = document.createElement('button')
+    this.cartBtn.className = 'cart'
+    this.cartBtn.innerText = `Cart (${this.itemsInCart})`
+    this.cart = []
     this.devices = []
     this.categories = []
     items.forEach(item => {
       let newDevice = new Device(item)
+      newDevice.addToCartButton.addEventListener('click', () => {
+        this.cartBtn.innerText = `Cart (${++this.itemsInCart})`
+        this.cart.push(newDevice)
+      })
       this.devices.push(newDevice)
       if (!this.categories.includes(newDevice.property.category)) {
         this.categories.push(newDevice.property.category)
@@ -1311,13 +1320,9 @@ class webSite {
     inputElementDiv.appendChild(inputElement)
     inputElementDiv.appendChild(searchButton)
 
-    let cartBtn = document.createElement('button')
-    cartBtn.className = 'cart'
-    cartBtn.innerText = 'Cart'
-
     header.appendChild(homeLink)
     header.appendChild(inputElementDiv)
-    header.appendChild(cartBtn)
+    header.appendChild(this.cartBtn)
 
     searchButton.addEventListener('click', () => {
       let value = inputElement.value
@@ -1327,6 +1332,39 @@ class webSite {
         if (device.property.name.toLowerCase().includes(value.toLowerCase()))
         this.devicesGrid.appendChild(device.deviceDiv)
       })
+    })
+
+    this.cartBtn.addEventListener('click', () => {
+      this.devicesGrid.innerText = ''
+      let inCartDiv = document.createElement('div')
+      inCartDiv.style.textAlign = 'center'
+      let inCartParagraph = document.createElement('h1')
+      inCartParagraph.innerText = 'Items in Cart'
+      inCartDiv.appendChild(inCartParagraph)
+      this.cart = this.cart.sort()
+      let amount = 1
+      for (let i = 0; i < this.cart.length - 1; i++) {
+        if (this.cart[i] === this.cart[i + 1]) {
+          amount++
+        } else {
+          let curDeviceDiv = document.createElement('div')
+          let amountOfCurDevice = document.createElement('h2')
+          amountOfCurDevice.innerText = `Amount of this product: ${amount}`
+          let curDevice = this.cart[i].createHTML()
+          curDeviceDiv.appendChild(amountOfCurDevice)
+          curDeviceDiv.appendChild(curDevice)
+          inCartDiv.appendChild(curDeviceDiv)
+          amount = 1
+        }
+      }
+      let curDeviceDiv = document.createElement('div')
+      let amountOfCurDevice = document.createElement('h2')
+      amountOfCurDevice.innerText = `Amount of this product: ${amount}`
+      let curDevice = this.cart[this.cart.length - 1].createHTML()
+      curDeviceDiv.appendChild(amountOfCurDevice)
+      curDeviceDiv.appendChild(curDevice)
+      inCartDiv.appendChild(curDeviceDiv)
+      document.body.appendChild(inCartDiv)
     })
 
     document.body.appendChild(header)
@@ -1412,7 +1450,11 @@ class webSite {
 class Device {
   constructor(property) {
     this.property = property
+    this.addToCartButton = document.createElement('button')
+    this.addToCartButton.className = 'add-to-cart-btn'
+    this.addToCartButton.innerText = 'Add to cart'
     this.deviceDiv = this.createHTML()
+    this.deviceDiv.appendChild(this.addToCartButton)
   }
 
   createHTML() {
@@ -1465,6 +1507,8 @@ class Device {
     let inStockInfoDiv = document.createElement('div')
     inStockInfoDiv.className = 'in-stock-info'
     let inStockProperty = document.createElement('a')
+    inStockProperty.style.textDecoration = 'none'
+    inStockProperty.style.color = 'rgba(0, 0, 0, 0.64)'
     inStockProperty.className = 'in-stock'
     let stockImg = document.createElement('img')
     if (this.property.orderInfo.inStock !== 0) {
@@ -1491,9 +1535,11 @@ class Device {
     additionInfoDiv.appendChild(reviewsProperty)
     additionInfoDiv.appendChild(priceProperty)
 
+
     deviceDiv.appendChild(imgDiv)
     deviceDiv.appendChild(divDeviceName)
     deviceDiv.appendChild(additionInfoDiv)
+    deviceDiv.style.textAlign = 'center'
     return deviceDiv
   }
 }
