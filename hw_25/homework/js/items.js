@@ -1284,6 +1284,7 @@ class webSite {
     this.cart = []
     this.devices = []
     this.categories = []
+    this.inCartDiv = document.createElement('div')
     items.forEach(item => {
       let newDevice = new Device(item)
       newDevice.addToCartButton.addEventListener('click', () => {
@@ -1336,11 +1337,11 @@ class webSite {
 
     this.cartBtn.addEventListener('click', () => {
       this.devicesGrid.innerText = ''
-      let inCartDiv = document.createElement('div')
-      inCartDiv.style.textAlign = 'center'
+      this.inCartDiv.innerText = ''
+      this.inCartDiv.style.textAlign = 'center'
       let inCartParagraph = document.createElement('h1')
       inCartParagraph.innerText = 'Items in Cart'
-      inCartDiv.appendChild(inCartParagraph)
+      this.inCartDiv.appendChild(inCartParagraph)
       this.cart = this.cart.sort()
       let amount = 1
       for (let i = 0; i < this.cart.length - 1; i++) {
@@ -1353,7 +1354,7 @@ class webSite {
           let curDevice = this.cart[i].createHTML()
           curDeviceDiv.appendChild(amountOfCurDevice)
           curDeviceDiv.appendChild(curDevice)
-          inCartDiv.appendChild(curDeviceDiv)
+          this.inCartDiv.appendChild(curDeviceDiv)
           amount = 1
         }
       }
@@ -1363,8 +1364,8 @@ class webSite {
       let curDevice = this.cart[this.cart.length - 1].createHTML()
       curDeviceDiv.appendChild(amountOfCurDevice)
       curDeviceDiv.appendChild(curDevice)
-      inCartDiv.appendChild(curDeviceDiv)
-      document.body.appendChild(inCartDiv)
+      this.inCartDiv.appendChild(curDeviceDiv)
+      document.body.appendChild(this.inCartDiv)
     })
 
     document.body.appendChild(header)
